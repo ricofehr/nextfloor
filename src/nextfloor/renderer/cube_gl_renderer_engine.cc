@@ -6,10 +6,10 @@
 
 #include "nextfloor/renderer/cube_gl_renderer_engine.h"
 
+#include <iostream>
 #include <vector>
 #include <GL/glew.h>
 #include <SOIL/SOIL.h>
-
 
 namespace nextfloor {
 
@@ -66,6 +66,7 @@ void CubeGlRendererEngine::Init()
     CreateVertexBuffer();
     CreateElementBuffer();
     CreateTextureBuffer();
+    InitShaderAttributes();
     is_initialized_ = true;
 }
 
@@ -80,7 +81,7 @@ void CubeGlRendererEngine::CreateVertexBuffer()
 
     glBindVertexArray(vertexarray_);
     glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer_);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(sBufferData), sBufferData, GL_STREAM_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(sBufferData), sBufferData, GL_STATIC_DRAW);
 }
 
 /* Load element coordinates into buffer */
@@ -113,7 +114,20 @@ void CubeGlRendererEngine::CreateElementBuffer()
     assert(elementbuffer_ != 0);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer_);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(elements), elements, GL_STREAM_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(elements), elements, GL_STATIC_DRAW);
+}
+
+void CubeGlRendererEngine::InitShaderAttributes()
+{
+    // position attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+    // color attribute
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
+    // texture coord attribute
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+    glEnableVertexAttribArray(2);
 }
 
 /*
@@ -127,66 +141,56 @@ void CubeGlRendererEngine::CreateTextureBuffer()
     glGenTextures(1, &texturebuffer_);
     assert(texturebuffer_ != 0);
 
-    glActiveTexture(GL_TEXTURE0 + texturebuffer_);
+    glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, texturebuffer_);
-
-    /* Load Texture */
-    image = SOIL_load_image(texture_.c_str(), &width, &height, 0, SOIL_LOAD_RGB);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
-    SOIL_free_image_data(image);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    /* Magnification filter (Stretch the texture) */
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     /* Minification Filter (Shrink the texture) */
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    /* Create mipmap images */
-    glGenerateMipmap(GL_TEXTURE_2D);
+    /* Magnification filter (Stretch the texture) */
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    /* Load Texture */
+    image = SOIL_load_image(texture_.c_str(), &width, &height, 0, SOIL_LOAD_RGB);
+
+    if (image) {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
+        glGenerateMipmap(GL_TEXTURE_2D);
+    } else {
+        std::cout << "Failed to load texture:" << texture_ << std::endl;
+    }
+    SOIL_free_image_data(image);
+    glUseProgram(pipeline_program_->getProgramId());
+    glUniform1i(glGetUniformLocation(pipeline_program_->getProgramId(), "tex"), 0);
 }
 
 void CubeGlRendererEngine::Draw(const glm::mat4& mvp)
 {
-    {
-        if (!is_initialized_) {
-            Init();
-        }
-
-        //glEnable(GL_CULL_FACE);
-        glUseProgram(pipeline_program_->getProgramId());
-        /* Assign projection matrix to drawn */
-        glUniformMatrix4fv(pipeline_program_->getMatrixId(), 1, GL_FALSE, &mvp[0][0]);
-
-        glBindVertexArray(vertexarray_);
-        glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer_);
-
-        /* 1st attribute buffer : vertices position, used 3 floats */
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)0);
-
-        /* 2nd attribute buffer : colors, used 3 floats */
-        glEnableVertexAttribArray(1);
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
-
-        /* 3th attribute buffer : texture position, used 2 floats */
-        glEnableVertexAttribArray(2);
-        glActiveTexture(GL_TEXTURE0 + texturebuffer_);
-        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)(6 * sizeof(GLfloat)));
-
-        /* Assign texture to drawn */
-        glUniform1i(glGetUniformLocation(pipeline_program_->getProgramId(), "tex"), texturebuffer_);
-
-        /* Draw triangles from vertices setted from mvp matrix thanks elements coordinates */
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer_);
-        glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
-        glBindVertexArray(0);
-
-        glDisableVertexAttribArray(0);
-        glDisableVertexAttribArray(1);
-        glDisableVertexAttribArray(2);
+    if (!is_initialized_) {
+        Init();
     }
+
+    glBindVertexArray(vertexarray_);
+    glUseProgram(pipeline_program_->getProgramId());
+    /* Assign projection matrix to drawn */
+    glUniformMatrix4fv(pipeline_program_->getMatrixId(), 1, GL_FALSE, &mvp[0][0]);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, texturebuffer_);
+    glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+    glBindVertexArray(0);
 }
 
+CubeGlRendererEngine::~CubeGlRendererEngine()
+{
+    glDisableVertexAttribArray(0);
+    glDisableVertexAttribArray(1);
+    glDisableVertexAttribArray(2);
+    glDeleteVertexArrays(1, &vertexarray_);
+    glDeleteBuffers(1, &vertexbuffer_);
+    glDeleteBuffers(1, &texturebuffer_);
+    glDeleteBuffers(1, &elementbuffer_);
+}
 
 }  // namespace renderer
 

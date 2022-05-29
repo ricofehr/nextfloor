@@ -20,7 +20,7 @@ class CubeGlRendererEngine : public GlRendererEngine {
 
 public:
     CubeGlRendererEngine(const std::string& texture, PipelineProgram* pipeline_program_);
-    ~CubeGlRendererEngine() final = default;
+    ~CubeGlRendererEngine() final;
 
     void Draw(const glm::mat4& mvp) final;
 
@@ -29,6 +29,7 @@ private:
     void CreateVertexBuffer();
     void CreateElementBuffer();
     void CreateTextureBuffer();
+    void InitShaderAttributes();
 
     bool is_initialized_ = false;
     std::string texture_;

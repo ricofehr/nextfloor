@@ -107,9 +107,9 @@ PartialMove ClNearerCollisionEngine::ComputeCollision(nextfloor::mesh::Mesh* tar
     std::vector<glm::vec3> coords2 = obstacle_border->getCoordsModelMatrixComputed();
 
     /* First polygon point (x,y,z) and dimensions (h,w,d) */
-    GLfloat x1, y1, z1, h1, w1, d1;
-    GLfloat x2, y2, z2, h2, w2, d2;
-    GLfloat move1x, move1y, move1z, move2x, move2y, move2z;
+    float x1, y1, z1, h1, w1, d1;
+    float x2, y2, z2, h2, w2, d2;
+    float move1x, move1y, move1z, move2x, move2y, move2z;
 
     x1 = coords1.at(0)[0];
     y1 = coords1.at(0)[1];
