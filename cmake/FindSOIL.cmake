@@ -1,4 +1,4 @@
-FIND_PATH(SOIL_INCLUDE_DIR SOIL.h /usr/include /usr/local/include/SOIL)
+FIND_PATH(SOIL_INCLUDE_DIR SOIL.h /usr/include/SOIL /usr/local/include/SOIL)
 
 FIND_LIBRARY(SOIL_LIBRARY NAMES SOIL PATH /usr/lib /usr/local/lib) 
 

@@ -20,7 +20,7 @@ class CubeMapGlRendererEngine : public GlRendererEngine {
 
 public:
     CubeMapGlRendererEngine(PipelineProgram* pipeline_program);
-    ~CubeMapGlRendererEngine() final = default;
+    ~CubeMapGlRendererEngine() final;
 
     void Draw(const glm::mat4& mvp) final;
 
@@ -28,6 +28,7 @@ private:
     void Init();
     void CreateVertexBuffer();
     void CreateTextureBuffer();
+    void InitShaderAttributes();
 
     bool is_initialized_ = false;
 
