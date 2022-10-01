@@ -8,7 +8,7 @@
 
 #include <vector>
 #include <cassert>
-#include <tbb/mutex.h>
+#include <mutex>
 
 #include "nextfloor/mesh/mesh.h"
 
@@ -35,13 +35,13 @@ void WiredGridBox::add(nextfloor::mesh::Mesh* object)
         return;
     }
 
-    tbb::mutex::scoped_lock lock_map(mutex_);
+    std::scoped_lock lock_map(mutex_);
     occupants_.push_back(object);
 }
 
 void WiredGridBox::remove(nextfloor::mesh::Mesh* object)
 {
-    tbb::mutex::scoped_lock lock_map(mutex_);
+    std::scoped_lock lock_map(mutex_);
 
     for (auto cnt = 0; cnt < occupants_.size(); cnt++) {
         if (occupants_[cnt] == object) {

@@ -10,7 +10,7 @@
 #include <vector>
 #include <glm/glm.hpp>
 #include <string>
-#include <tbb/mutex.h>
+#include <mutex>
 
 #include "nextfloor/mesh/border.h"
 #include "nextfloor/mesh/grid_box.h"

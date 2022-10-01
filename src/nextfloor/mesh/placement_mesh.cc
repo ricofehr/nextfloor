@@ -21,12 +21,12 @@ std::vector<Mesh*> PlacementMesh::GetMovingObjects()
 {
     std::vector<Mesh*> moving_objects;
 
-    tbb::mutex movers_lock;
+    std::mutex movers_lock;
 
     tbb::parallel_for(0, (int)objects_.size(), 1, [&](int i) {
         auto movers = objects_[i]->GetMovingObjects();
         if (movers.size() != 0) {
-            tbb::mutex::scoped_lock lock_map(movers_lock);
+            std::scoped_lock lock_map(movers_lock);
             moving_objects.insert(moving_objects.end(), movers.begin(), movers.end());
         }
     });

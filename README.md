@@ -62,6 +62,7 @@ $ csrutil disable
 
 In build directory, generate MakeFiles and compile project
 ```
+$ git lfs install && git lfs fetch && git lfs checkout
 $ cd build && cmake ../
 -- The C compiler identification is AppleClang 11.0.0.11000033
 -- The CXX compiler identification is AppleClang 11.0.0.11000033

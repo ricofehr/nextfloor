@@ -11,7 +11,7 @@
 #include <vector>
 #include <glm/glm.hpp>
 #include <string>
-#include <tbb/mutex.h>
+#include <mutex>
 
 #include "nextfloor/mesh/border.h"
 
@@ -107,7 +107,7 @@ protected:
     std::vector<GridBox*> coords_list_;
     std::unique_ptr<Border> border_{nullptr};
     Mesh* obstacle_{nullptr};
-    tbb::mutex mutex_;
+    std::mutex mutex_;
 };
 
 }  // namespace mesh

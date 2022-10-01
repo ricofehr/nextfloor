@@ -41,7 +41,7 @@ public:
 
     void UpdateObstacleIfNearer(Mesh* obstacle, float distance_factor, glm::vec3 move_factor) final
     {
-        tbb::mutex::scoped_lock lock_map(mutex_);
+        std::scoped_lock lock_map(mutex_);
 
         /* Update obstacle and distance if lower than former */
         if (IsDistanceNearer(distance_factor)) {

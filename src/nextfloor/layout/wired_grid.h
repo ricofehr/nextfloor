@@ -11,7 +11,7 @@
 
 #include <glm/glm.hpp>
 #include <memory>
-#include <tbb/mutex.h>
+#include <mutex>
 #include <vector>
 
 #include "nextfloor/mesh/mesh.h"
@@ -163,7 +163,7 @@ private:
     glm::vec3 box_dimension_;
     glm::vec3 location_;
     glm::ivec3 boxes_count_;
-    tbb::mutex mutex_;
+    std::mutex mutex_;
 };
 
 }  // namespace layout

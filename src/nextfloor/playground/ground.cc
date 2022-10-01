@@ -7,6 +7,7 @@
 #include "nextfloor/playground/ground.h"
 
 #include <tbb/tbb.h>
+#include <mutex>
 #include <vector>
 #include <glm/glm.hpp>
 
@@ -28,13 +29,13 @@ std::vector<nextfloor::mesh::Mesh*> Ground::FindCollisionNeighborsOf(const nextf
     all_neighbors.erase(unique(all_neighbors.begin(), all_neighbors.end()), all_neighbors.end());
     all_neighbors.erase(std::remove(all_neighbors.begin(), all_neighbors.end(), &target));
 
-    tbb::mutex neighbors_mutex;
+    std::mutex neighbors_mutex;
     std::vector<nextfloor::mesh::Mesh*> collision_neighbors(0);
 
     tbb::parallel_for(0, (int)all_neighbors.size(), 1, [&](int i) {
         auto neighbor = all_neighbors[i];
         if (target.IsNeighborEligibleForCollision(*neighbor)) {
-            tbb::mutex::scoped_lock lock_map(neighbors_mutex);
+            std::scoped_lock lock_map(neighbors_mutex);
             collision_neighbors.push_back(neighbor);
         }
     });
@@ -71,7 +72,7 @@ nextfloor::mesh::Mesh* Ground::TransfertChildToNeighbor(nextfloor::mesh::Mesh* c
 nextfloor::mesh::Mesh* Ground::AddIntoChild(std::unique_ptr<nextfloor::mesh::Mesh> mesh)
 {
     assert(mesh != nullptr);
-    tbb::mutex::scoped_lock lock_map(mutex_);
+    std::scoped_lock lock_map(mutex_);
 
     auto mesh_raw = mesh.get();
 

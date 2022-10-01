@@ -35,6 +35,9 @@
 *.swp
 *~
 
+# vscode settings
+.vscode
+
 # Cmake files and folder
 Makefile
 cmake_install.cmake

@@ -33,7 +33,7 @@ GlRendererFactory::GlRendererFactory()
 
 nextfloor::gameplay::RendererEngine* GlRendererFactory::MakeCubeMapRenderer()
 {
-    tbb::mutex::scoped_lock lock_map(mutex_);
+    std::scoped_lock lock_map(mutex_);
 
     if (cube_map_renderer_ == nullptr) {
         if (pipeline_programs_.find(kCubeMapRendererLabel) == pipeline_programs_.end()) {
@@ -49,7 +49,7 @@ nextfloor::gameplay::RendererEngine* GlRendererFactory::MakeCubeMapRenderer()
 
 nextfloor::gameplay::RendererEngine* GlRendererFactory::MakeCubeRenderer(const std::string& texture)
 {
-    tbb::mutex::scoped_lock lock_map(mutex_);
+    std::scoped_lock lock_map(mutex_);
 
     if (renderers_.find(texture) == renderers_.end()) {
         if (pipeline_programs_.find(kCubeRendererLabel) == pipeline_programs_.end()) {
@@ -69,7 +69,7 @@ nextfloor::gameplay::SceneWindow* GlRendererFactory::GetOrMakeSceneWindow()
         return scene_window_.get();
     }
 
-    tbb::mutex::scoped_lock lock_map(mutex_);
+    std::scoped_lock lock_map(mutex_);
 
     if (scene_window_ == nullptr) {
         scene_window_ = std::make_unique<GlSceneWindow>();
