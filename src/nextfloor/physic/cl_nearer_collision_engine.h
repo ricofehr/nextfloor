@@ -14,7 +14,7 @@
 #define CL_HPP_ENABLE_EXCEPTIONS
 
 #include <vector>
-#include <tbb/mutex.h>
+#include <mutex>
 
 #ifdef __APPLE__
 #include <OpenCL/cl2.hpp>
@@ -63,7 +63,7 @@ private:
     std::vector<cl::Buffer> bufferout_;
 
     /** Ensures thread safe execution */
-    tbb::mutex collision_mutex_;
+    std::mutex collision_mutex_;
 
     /** Opencl Workgroup size */
     int wk_size_{32};

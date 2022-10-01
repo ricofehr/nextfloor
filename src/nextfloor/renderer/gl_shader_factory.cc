@@ -7,7 +7,7 @@
 
 #include "nextfloor/renderer/gl_shader_factory.h"
 
-#include <tbb/mutex.h>
+#include <mutex>
 #include <cassert>
 #include <sstream>
 
@@ -50,7 +50,7 @@ GlShaderFactory::GlShaderFactory()
 
 Shader* GlShaderFactory::MakeVertexShader(const std::string& shader_label, unsigned int program_id)
 {
-    static tbb::mutex vertex_mutex_;
+    static std::mutex vertex_mutex_;
 
     std::string shader_path = getVertexShaderPath(shader_label);
 
@@ -67,7 +67,7 @@ Shader* GlShaderFactory::MakeVertexShader(const std::string& shader_label, unsig
 
 Shader* GlShaderFactory::MakeFragmentShader(const std::string& shader_label, unsigned int program_id)
 {
-    static tbb::mutex fragment_mutex_;
+    static std::mutex fragment_mutex_;
 
     std::string shader_path = getFragmentShaderPath(shader_label);
 

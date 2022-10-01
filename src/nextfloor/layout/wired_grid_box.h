@@ -10,7 +10,7 @@
 #include "nextfloor/mesh/grid_box.h"
 
 #include <glm/glm.hpp>
-#include <tbb/mutex.h>
+#include <mutex>
 #include <vector>
 
 #include "nextfloor/playground/grid.h"
@@ -64,7 +64,7 @@ private:
     std::vector<nextfloor::mesh::Mesh*> occupants_;
     nextfloor::playground::Grid* owner_{nullptr};
     glm::vec3 coords_;
-    tbb::mutex mutex_;
+    std::mutex mutex_;
 };
 
 }  // namespace layout

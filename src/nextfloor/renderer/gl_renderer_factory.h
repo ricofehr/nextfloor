@@ -12,7 +12,7 @@
 #include <map>
 #include <memory>
 #include <string>
-#include <tbb/mutex.h>
+#include <mutex>
 
 #include "nextfloor/gameplay/renderer_engine.h"
 #include "nextfloor/gameplay/scene_window.h"
@@ -52,7 +52,7 @@ private:
     std::unique_ptr<nextfloor::gameplay::RendererEngine> cube_map_renderer_;
     std::unique_ptr<nextfloor::gameplay::SceneWindow> scene_window_;
     std::unique_ptr<ShaderFactory> shader_factory_;
-    tbb::mutex mutex_;
+    std::mutex mutex_;
 };
 
 }  // namespace renderer

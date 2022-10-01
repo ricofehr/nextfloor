@@ -38,7 +38,7 @@ std::vector<Mesh*> CompositeMesh::leafs()
 
 Mesh* CompositeMesh::add_child(std::unique_ptr<Mesh> object)
 {
-    tbb::mutex::scoped_lock lock_map(mutex_);
+    std::scoped_lock lock_map(mutex_);
 
     auto object_raw = object.get();
     object_raw->set_parent(this);
@@ -60,7 +60,7 @@ Mesh* CompositeMesh::add_child(std::unique_ptr<Mesh> object)
 
 std::unique_ptr<Mesh> CompositeMesh::remove_child(Mesh* child)
 {
-    tbb::mutex::scoped_lock lock_map(mutex_);
+    std::scoped_lock lock_map(mutex_);
 
     std::unique_ptr<Mesh> ret{nullptr};
 

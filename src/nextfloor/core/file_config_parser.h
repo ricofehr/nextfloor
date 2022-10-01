@@ -12,6 +12,8 @@
 #include <libconfig.h++>
 #include <memory>
 #include <tbb/tbb.h>
+#include <oneapi/tbb/info.h>
+#include <oneapi/tbb/global_control.h>
 #include <string>
 
 namespace nextfloor {
@@ -52,7 +54,7 @@ public:
     int getThreadsCount() const final
     {
         return getSetting<int>("workers_count") > 0 ? getSetting<int>("workers_count")
-                                                    : tbb::task_scheduler_init::default_num_threads();
+                                                    : oneapi::tbb::info::default_concurrency();
     }
 
     int getParallellAlgoType() const final { return getSetting<int>("parallell"); }
@@ -114,7 +116,7 @@ private:
     void EnsureCoherentWorkerSetting();
 
     libconfig::Config config_;
-    std::unique_ptr<tbb::task_scheduler_init> tbb_threads_config_{nullptr};
+    std::unique_ptr<oneapi::tbb::global_control> tbb_threads_config_{nullptr};
 };
 
 }  // namespace core
