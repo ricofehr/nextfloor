@@ -285,10 +285,7 @@ void FileConfigParser::EnsureCoherentWorkerSetting()
     /* Manage Threads Parallelism */
     if (getThreadsCount()) {
         using oneapi::tbb::global_control;
-        int ok = getThreadsCount();
         global_control(global_control::max_allowed_parallelism, getThreadsCount());
-        //tbb_threads_config_ = std::make_unique<global_control(global_control::max_allowed_parallelism, ok)>;
-        //tbb_threads_config_ = std::make_unique<tbb::task_scheduler_init>(getThreadsCount());
     }
 }
 
