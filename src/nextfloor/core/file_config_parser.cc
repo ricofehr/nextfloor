@@ -130,7 +130,7 @@ void FileConfigParser::Display() const
 {
     auto count_workers = getThreadsCount();
 
-    std::cout << "Parallell mode (1 -> serial, 2 -> tbb, 3 -> opencl): " << getSetting<int>("parallell") << std::endl;
+    std::cout << "Parallell mode (1 -> serial, 2 -> tbb): " << getSetting<int>("parallell") << std::endl;
     std::cout << "Window width: " << getSetting<float>("width") << std::endl;
     std::cout << "Window height: " << getSetting<float>("height") << std::endl;
     std::cout << "NearerCollisionEngine granularity: " << getSetting<int>("granularity") << std::endl;
@@ -209,10 +209,9 @@ void FileConfigParser::DisplayHelp(const std::string& command_name) const
     std::cout << "-g n   Granularity on collision computes" << std::endl;
     std::cout << "-h     Display help" << std::endl;
     std::cout << "-l 1|0 Enable/Disable display config" << std::endl;
-    std::cout << "-p serial|tbb|opencl" << std::endl
+    std::cout << "-p serial|tbb" << std::endl
               << "       serial: no parallellism" << std::endl
-              << "       tbb: uses intel tbb library" << std::endl
-              << "       opencl: uses opencl for collision computes" << std::endl;
+              << "       tbb: uses intel tbb library" << std::endl;
     std::cout << "-v 1|0 Enable/Disable vsync" << std::endl;
     std::cout << "-w n   Workers (cpu core) count (disabled if -p serial), "
               << "0: no limit, all cpu cores" << std::endl;
@@ -251,10 +250,6 @@ void FileConfigParser::ManagePrallellAlgoTypeParameter(const std::string& parame
 
         if (parameter_value == "tbb") {
             setSetting("parallell", libconfig::Setting::TypeInt, NearerCollisionEngine::kParallellTbb);
-        }
-
-        if (parameter_value == "opencl") {
-            setSetting("parallell", libconfig::Setting::TypeInt, NearerCollisionEngine::kParallellOpenCL);
         }
     }
 }

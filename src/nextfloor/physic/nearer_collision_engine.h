@@ -19,14 +19,13 @@ namespace physic {
  *  @class NearerCollisionEngine
  *  @brief Abstract Class who manage collisition computes between 3d models\n
  *  Use Strategy / Template Method Patterns for this abstract class and subclasses,\n
- *  which proposes 3 differents Collision Algorithm: serial, cilkplus version and opencl version
+ *  which proposes 2 differents Collision Algorithm: serial, tbb version
  */
 class NearerCollisionEngine : public CollisionEngine {
 
 public:
     static constexpr int kParallellSerial = 1;
     static constexpr int kParallellTbb = 2;
-    static constexpr int kParallellOpenCL = 3;
 
     ~NearerCollisionEngine() override = default;
 
