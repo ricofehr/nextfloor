@@ -12,7 +12,6 @@
 
 #include "nextfloor/physic/tbb_nearer_collision_engine.h"
 #include "nextfloor/physic/serial_nearer_collision_engine.h"
-#include "nextfloor/physic/cl_nearer_collision_engine.h"
 
 namespace nextfloor {
 
@@ -25,9 +24,6 @@ std::unique_ptr<CollisionEngine> GameCollisionEngineFactory::MakeCollisionEngine
     switch (type) {  // clang-format off
         case NearerCollisionEngine::kParallellTbb:
             engine_collision = std::make_unique<TbbNearerCollisionEngine>(granularity);
-            break;
-        case NearerCollisionEngine::kParallellOpenCL:
-            engine_collision = std::make_unique<ClNearerCollisionEngine>(granularity);
             break;
         default:
             engine_collision = std::make_unique<SerialNearerCollisionEngine>(granularity);

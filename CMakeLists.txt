@@ -12,8 +12,10 @@ SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
 # Mojave issue
 IF(APPLE)
+    include_directories(/opt/local/include)
     # Fix linking on 10.14+. See https://stackoverflow.com/questions/54068035
-    LINK_DIRECTORIES(/usr/local/lib)
+    LINK_DIRECTORIES(/opt/local/lib)
+    LINK_DIRECTORIES(/opt/homebrew/lib/)
 ENDIF()
 
 set(ext_imgui_SRCS
@@ -93,7 +95,6 @@ set(mesh_SRCS
         src/nextfloor/mesh/dynamic_mesh.cc)
 
 set(physic_SRCS
-        src/nextfloor/physic/cl_nearer_collision_engine.cc
         src/nextfloor/physic/cube_border.cc
         src/nextfloor/physic/game_collision_engine_factory.cc
         src/nextfloor/physic/mesh_border_factory.cc
@@ -270,7 +271,6 @@ set(mesh_HDRS
         src/nextfloor/mesh/polygon_factory.h)
 
 set(physic_HDRS
-        src/nextfloor/physic/cl_nearer_collision_engine.h
         src/nextfloor/physic/collision_engine.h
         src/nextfloor/physic/collision_engine_factory.h
         src/nextfloor/physic/cube_border.h
@@ -351,9 +351,8 @@ find_package(Config++ REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(glfw3 REQUIRED)
 find_package(GLEW REQUIRED)
-find_package(OpenCL REQUIRED)
 find_package(SOIL REQUIRED)
 add_definitions("-std=gnu++17 -Wall")
-include_directories(${OPENGL_INCLUDE_DIR} ${GLEW_INCLUDE_DIR} ${SOIL_INCLUDE_DIR} ${OpenCL_INCLUDE_DIRS} ${Config++_INCLUDE_DIRS})
-target_link_libraries(nextfloor ${OPENGL_gl_LIBRARY} glew ${SOIL_LIBRARY} ${OpenCL_LIBRARY} glfw config++ tbb)
+include_directories(${OPENGL_INCLUDE_DIR} ${GLEW_INCLUDE_DIR} ${SOIL_INCLUDE_DIR} ${Config++_INCLUDE_DIRS})
+target_link_libraries(nextfloor ${OPENGL_gl_LIBRARY} glew ${SOIL_LIBRARY} glfw config++ tbb)
 target_compile_features(nextfloor PUBLIC cxx_nullptr)

@@ -7,7 +7,7 @@ The camera can move with mouse (head orientation) and arrow keys (camera directi
 
 ## Prerequisites
 
-Needs Git Lfs Extension, Cmake (>3.1 and <3.13), OpenCL (1.2), TBB, OpenGL3 (>3.3) and GLew / GLM / SOIL / Glfw libraries.
+Needs Git Lfs Extension, Cmake (>3.1 and <3.13), TBB, OpenGL3 (>3.3) and GLew / GLM / SOIL / Glfw libraries.
 
 On ubuntu or Debian, apt-get make most of prerequisites install
 ```
@@ -16,46 +16,19 @@ On ubuntu or Debian, apt-get make most of prerequisites install
 # apt-get install libglew-dev opencl-headers libtbb-dev lsb-core libconfig++-dev
 ```
 
-For OpenCL, we need gpu library, for intel gpu
-```
-# apt-get install beignet-dev
-```
-
-Or for nvidia gpu
-```
-# apt-get install nvidia-opencl-dev
-```
-
-And intel (for intel cpu) runtime
-```
-$ wget "http://registrationcenter-download.intel.com/akdlm/irc_nas/9019/opencl_runtime_16.1.1_x64_ubuntu_6.4.0.25.tgz"
-$ tar xvfz opencl_runtime_16.1.1_x64_ubuntu_6.4.0.25.tgz
-$ cd  opencl_runtime_16.1.1_x64_ubuntu_6.4.0.25 && ./install.sh
-```
-
 On OSX, we need XCode and install some libraries with brew (SOIL must be install manually)
 ```
 $ brew install cmake glm glew glfw3 tbb libconfig git-lfs
 ```
 
 And SOIL must be install manually
-```
-$ git clone https://github.com/childhood/libSOIL
-$ cd libSOIL && make
-$ sudo mkdir -p /usr/local/include/SOIL
-$ sudo cp *.h /usr/local/include/SOIL/
-$ sudo cp libSOIL.* /usr/local/lib/
-```
-
-And OpenCL must be install manually
-```
-$ wget https://github.com/KhronosGroup/OpenCL-CLHPP/releases/download/v2.0.10/cl2.hpp
-$ sudo mv cl2.hpp /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/OpenCL.framework/Headers/
-```
-
-For OpenCL header copy, need execute this in terminal on Recovery Mode
-```
-$ csrutil disable
+```bash
+git clone https://github.com/childhood/libSOIL
+cd libSOIL && make
+sudo mkdir -p /opt/local/include/SOIL
+sudo mkdir -p /opt/local/lib
+sudo cp *.h /opt/local/include/SOIL/
+sudo cp libSOIL.* /opt/local/lib/
 ```
 
 ## Compile
@@ -100,7 +73,6 @@ Scanning dependencies of target nextfloor
 ## Features
 
 - C++14
-- OpenCL 1.2
 - TBB
 - Opengl 3
 - Use of Glew, GLM, SOIL, Glfw libraries
@@ -111,7 +83,6 @@ Scanning dependencies of target nextfloor
 +--assets/  Texture files
 +--bin/     Binary folder where nextfloor executable is written
 +--build/   Build folder for compile stuffs
-+--cl/      OpenCL Kernels folder
 +--cmake/   Cmake modules folder
 +--config/  Config folder
 +--glsl/    OpenGL Shaders folder
@@ -149,10 +120,9 @@ Program accept options who can override config settings
 -g n   Granularity on collision computes
 -h     Display help
 -l 1|0 Enable/Disable display config
--p serial|tbb|opencl
+-p serial|tbb
        serial: no parallellism
        tbb: uses intel tbb library
-       opencl: uses opencl for collision computes
 -v 1|0 Enable/Disable vsync
 -w n   Workers (cpu core) count (disabled if -p serial), 0: no limit, all cpu cores
 ```

@@ -1,6 +1,6 @@
-FIND_PATH(SOIL_INCLUDE_DIR SOIL.h /usr/include/SOIL /usr/local/include/SOIL)
+FIND_PATH(SOIL_INCLUDE_DIR SOIL.h /usr/include/SOIL /usr/local/include/SOIL /opt/local/include/SOIL)
 
-FIND_LIBRARY(SOIL_LIBRARY NAMES SOIL PATH /usr/lib /usr/local/lib) 
+FIND_LIBRARY(SOIL_LIBRARY NAMES SOIL PATH /usr/lib /usr/local/lib /opt/local/lib) 
 
 IF (SOIL_INCLUDE_DIR AND SOIL_LIBRARY)
   SET(SOIL_FOUND TRUE)
