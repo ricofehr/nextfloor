@@ -12,7 +12,7 @@ namespace nextfloor {
 
 namespace action {
 
-void MoveRightAction::execute(nextfloor::character::Character* actor)
+void MoveRightAction::execute(nextfloor::element::Element* actor)
 {
     assert(actor != nullptr);
     actor->MoveRight();

@@ -1,0 +1,54 @@
+/**
+ *  @file jumpdown_element_state.h
+ *  @brief GravityElementState class header
+ *  @author Eric Fehr (ricofehr@nextdeploy.io, github: ricofehr)
+ */
+
+#ifndef NEXTFLOOR_AI_GRAVITYCHARACTERSTATE_H_
+#define NEXTFLOOR_AI_GRAVITYCHARACTERSTATE_H_
+
+#include "nextfloor/ai/element_state.h"
+
+#include "nextfloor/element/fsm.h"
+
+
+namespace nextfloor {
+
+namespace ai {
+
+/**
+ *  @class GravityElementState
+ *  @brief Concrete class for Jump Movement State
+ */
+class GravityElementState : public ElementState {
+
+public:
+    GravityElementState(nextfloor::element::FSM* owner) : owner_(owner) {}
+
+    void Enter(nextfloor::element::Element* actor) final;
+
+    void Execute(nextfloor::element::Element* actor, double elapsed_time) final;
+
+    void Exit(nextfloor::element::Element* actor) final;
+
+    bool IsInterruptible() final { return is_interruptible_; }
+
+    int type() final { return ElementState::kGravity; }
+
+private:
+    static constexpr float kMoveFactor = 4.0f;
+    static constexpr float kDistance = 1.5f;
+    static constexpr float kDuration = 0.5f;
+
+    float current_y_stage_{0.0f};
+    bool first_execution_{true};
+
+    bool is_interruptible_{false};
+    nextfloor::element::FSM* owner_{nullptr};
+};
+
+}  // namespace ai
+
+}  // namespace nextfloor
+
+#endif  // NEXTFLOOR_AI_JUMPCHARACTERSTATE_H_

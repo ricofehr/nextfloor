@@ -14,10 +14,10 @@
 
 #include "nextfloor/gameplay/renderer_factory.h"
 #include "nextfloor/physic/collision_engine.h"
-#include "nextfloor/character/character.h"
+#include "nextfloor/element/element.h"
 #include "nextfloor/playground/ground.h"
-#include "nextfloor/thing/thing.h"
-#include "nextfloor/character/camera.h"
+#include "nextfloor/scenery/scenery.h"
+#include "nextfloor/element/camera.h"
 
 
 namespace nextfloor {
@@ -32,7 +32,7 @@ class GameLevel : public Level {
 
 public:
     GameLevel(std::unique_ptr<nextfloor::playground::Ground> universe,
-              std::unique_ptr<nextfloor::character::Character> player,
+              std::unique_ptr<nextfloor::element::Element> player,
               std::unique_ptr<nextfloor::physic::CollisionEngine> collision_engine,
               RendererFactory* renderer_factory);
     ~GameLevel() final = default;
@@ -44,12 +44,12 @@ public:
 
     void UpdateCameraOrientation(HIDPointer angles) final;
     void ExecutePlayerAction(Action* command) final;
-    void UpdateCharacterStates(double elapsed_time) final;
+    void UpdateElementStates(double elapsed_time) final;
     void Move() final;
     void Draw(float window_size_ratio) final;
 
 private:
-    void SetActiveCamera(nextfloor::character::Camera* active_camera);
+    void SetActiveCamera(nextfloor::element::Camera* active_camera);
 
     void DetectCollision(std::vector<nextfloor::mesh::Mesh*> moving_objects);
     void PivotCollisonOnObject(nextfloor::mesh::Mesh* pivot);
@@ -60,8 +60,8 @@ private:
     void RendererCubeMap(float window_size_ratio);
 
     std::unique_ptr<nextfloor::playground::Ground> universe_{nullptr};
-    nextfloor::character::Character* player_{nullptr};
-    std::list<nextfloor::character::Camera*> game_cameras_;
+    nextfloor::element::Element* player_{nullptr};
+    std::list<nextfloor::element::Camera*> game_cameras_;
     std::unique_ptr<nextfloor::physic::CollisionEngine> collision_engine_{nullptr};
     RendererFactory* renderer_factory_{nullptr};
 };

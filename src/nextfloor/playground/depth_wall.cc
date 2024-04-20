@@ -13,7 +13,7 @@ namespace nextfloor {
 
 namespace playground {
 
-DepthWall::DepthWall(std::vector<std::unique_ptr<nextfloor::thing::Thing>> wall_bricks)
+DepthWall::DepthWall(std::vector<std::unique_ptr<nextfloor::scenery::Scenery>> wall_bricks)
 {
     AddBricks(std::move(wall_bricks));
 }

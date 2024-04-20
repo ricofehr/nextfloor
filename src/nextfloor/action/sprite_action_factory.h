@@ -15,7 +15,7 @@ namespace action {
 
 /**
  *  @class SrpiteActionFactory
- *  @brief Concrete Action Factory for any character (player and NPJs) actions
+ *  @brief Concrete Action Factory for any element (player and NPJs) actions
  */
 class SpriteActionFactory : public nextfloor::gameplay::ActionFactory {
 

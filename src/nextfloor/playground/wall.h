@@ -13,7 +13,7 @@
 #include <vector>
 #include <glm/glm.hpp>
 
-#include "nextfloor/thing/thing.h"
+#include "nextfloor/scenery/scenery.h"
 
 namespace nextfloor {
 
@@ -31,7 +31,7 @@ public:
     virtual void AddDoor() = 0;
     virtual void AddWindow() = 0;
 
-    void AddBricks(std::vector<std::unique_ptr<nextfloor::thing::Thing>> wall_bricks);
+    void AddBricks(std::vector<std::unique_ptr<nextfloor::scenery::Scenery>> wall_bricks);
     std::vector<nextfloor::mesh::Mesh*> FindCollisionNeighborsOf(const nextfloor::mesh::Mesh& target) const final;
     std::unique_ptr<nextfloor::mesh::Mesh> remove_child(nextfloor::mesh::Mesh* child) final;
 

@@ -12,7 +12,7 @@ namespace nextfloor {
 
 namespace playground {
 
-FrontWall::FrontWall(std::vector<std::unique_ptr<nextfloor::thing::Thing>> wall_bricks)
+FrontWall::FrontWall(std::vector<std::unique_ptr<nextfloor::scenery::Scenery>> wall_bricks)
       : WidthWall(std::move(wall_bricks))
 {}
 

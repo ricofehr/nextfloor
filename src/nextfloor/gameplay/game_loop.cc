@@ -78,7 +78,7 @@ void GameLoop::RunGame()
 {
     UpdateCameraOrientation();
     HandlerInput();
-    ManageCharacterStates();
+    ManageElementStates();
     Draw();
 }
 
@@ -110,9 +110,9 @@ void GameLoop::HandlerInput()
     }
 }
 
-void GameLoop::ManageCharacterStates()
+void GameLoop::ManageElementStates()
 {
-    level_->UpdateCharacterStates(timer_->getDeltaTimeSinceLastLoop());
+    level_->UpdateElementStates(timer_->getDeltaTimeSinceLastLoop());
 }
 
 void GameLoop::Draw()

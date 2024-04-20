@@ -16,8 +16,8 @@
 #include "nextfloor/gameplay/renderer_engine.h"
 
 #include "nextfloor/mesh/mesh.h"
-#include "nextfloor/character/camera.h"
-#include "nextfloor/character/character.h"
+#include "nextfloor/element/camera.h"
+#include "nextfloor/element/element.h"
 
 #include "nextfloor/core/common_services.h"
 
@@ -26,7 +26,7 @@ namespace nextfloor {
 namespace gameplay {
 
 GameLevel::GameLevel(std::unique_ptr<nextfloor::playground::Ground> universe,
-                     std::unique_ptr<nextfloor::character::Character> player,
+                     std::unique_ptr<nextfloor::element::Element> player,
                      std::unique_ptr<nextfloor::physic::CollisionEngine> collision_engine,
                      RendererFactory* renderer_factory)
 {
@@ -39,9 +39,9 @@ GameLevel::GameLevel(std::unique_ptr<nextfloor::playground::Ground> universe,
     renderer_factory_ = renderer_factory;
 }
 
-void GameLevel::SetActiveCamera(nextfloor::character::Camera* active_camera)
+void GameLevel::SetActiveCamera(nextfloor::element::Camera* active_camera)
 {
-    std::list<nextfloor::character::Camera*>::iterator it;
+    std::list<nextfloor::element::Camera*>::iterator it;
     for (it = game_cameras_.begin(); it != game_cameras_.end(); ++it) {
         if (*it == active_camera) {
             game_cameras_.remove(active_camera);
@@ -63,17 +63,17 @@ void GameLevel::ExecutePlayerAction(Action* command)
     command->execute(player_);
 }
 
-void GameLevel::UpdateCharacterStates(double elapsed_time)
+void GameLevel::UpdateElementStates(double elapsed_time)
 {
     player_->UpdateState(elapsed_time);
 
-    using nextfloor::character::Character;
+    using nextfloor::element::Element;
     std::vector<nextfloor::mesh::Mesh*> moving_objects = universe_->GetMovingObjects();
     tbb::parallel_for(0, (int)moving_objects.size(), 1, [&](int i) {
-        Character* character = (Character*)moving_objects[i];
-        if (!character->IsPlayer()) {
-            character->MoveUp();
-            character->UpdateState(elapsed_time);
+        Element* element = (Element*)moving_objects[i];
+        if (!element->IsPlayer()) {
+            element->MoveUp();
+            element->UpdateState(elapsed_time);
         }
     });
 }
@@ -114,7 +114,7 @@ void GameLevel::Draw(float window_size_ratio)
 
 void GameLevel::PrepareDraw(float window_size_ratio)
 {
-    nextfloor::character::Camera* active_camera = game_cameras_.front();
+    nextfloor::element::Camera* active_camera = game_cameras_.front();
     universe_->PrepareDraw(active_camera->GetViewProjectionMatrix(window_size_ratio));
 }
 
@@ -137,7 +137,7 @@ void GameLevel::Renderer(const nextfloor::mesh::Mesh& mesh)
 void GameLevel::RendererCubeMap(float window_size_ratio)
 {
     RendererEngine* cube_map_renderer = renderer_factory_->MakeCubeMapRenderer();
-    nextfloor::character::Camera* active_camera = game_cameras_.front();
+    nextfloor::element::Camera* active_camera = game_cameras_.front();
     cube_map_renderer->Draw(active_camera->GetFarAndStaticViewProjectionMatrix(window_size_ratio));
 }
 

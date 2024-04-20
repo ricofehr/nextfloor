@@ -17,7 +17,7 @@ namespace gameplay {
 
 /**
  *  @class ActionFactory
- *  @brief Abstract Factory for character actions
+ *  @brief Abstract Factory for element actions
  */
 class ActionFactory {
 

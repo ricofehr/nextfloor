@@ -13,7 +13,7 @@ namespace nextfloor {
 
 namespace camera {
 
-std::unique_ptr<nextfloor::character::Camera> GameCameraFactory::MakeCamera() const
+std::unique_ptr<nextfloor::element::Camera> GameCameraFactory::MakeCamera() const
 {
     return std::make_unique<HeadCamera>();
 }

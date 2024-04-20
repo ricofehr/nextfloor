@@ -52,7 +52,7 @@ private:
     /** The main hid */
     std::unique_ptr<nextfloor::gameplay::HID> hid_{nullptr};
 
-    /** Character Commands */
+    /** Element Commands */
     std::unique_ptr<nextfloor::gameplay::Action> move_up_command_{nullptr};
     std::unique_ptr<nextfloor::gameplay::Action> move_down_command_{nullptr};
     std::unique_ptr<nextfloor::gameplay::Action> move_left_command_{nullptr};

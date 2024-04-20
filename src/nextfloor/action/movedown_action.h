@@ -15,12 +15,12 @@ namespace action {
 
 /**
  *  @class MoveDownAction
- *  @brief Implements Action (Command Pattern), generate Move Down action for any character
+ *  @brief Implements Action (Command Pattern), generate Move Down action for any element
  */
 class MoveDownAction : public nextfloor::gameplay::Action {
 
 public:
-    void execute(nextfloor::character::Character* actor) final;
+    void execute(nextfloor::element::Element* actor) final;
 };
 
 }  // namespace action
