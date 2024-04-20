@@ -26,6 +26,7 @@ class MovingRock : public Character {
 
 public:
     static constexpr float kBorderScale = 1.0f;
+    static constexpr float kTinyScale = 0.125f;
     static constexpr char kTexture[] = "assets/rock.jpg";
 
     MovingRock(std::unique_ptr<nextfloor::mesh::Border> border, std::unique_ptr<FSM> fsm,

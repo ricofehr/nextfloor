@@ -24,6 +24,7 @@ public:
     static constexpr float kMediumScale = 0.75f;
     static constexpr float kSmallScale = 0.5f;
     static constexpr float kSmallerScale = 0.25f;
+    static constexpr float kTinyScale = 0.125f;
 
     std::string class_name() const final { return "Thing"; }
 };

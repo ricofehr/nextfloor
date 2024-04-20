@@ -34,6 +34,7 @@ public:
 
     std::unique_ptr<Thing> MakeRock(const glm::vec3& location, const glm::vec3& movement) const final;
     std::unique_ptr<Thing> MakeLittleRock(const glm::vec3& location, const glm::vec3& movement) const final;
+    std::unique_ptr<Thing> MakeTinyRock(const glm::vec3& location, const glm::vec3& movement) const final;
 
     std::vector<std::unique_ptr<Thing>> GenerateWallBricks(glm::vec3 firstpoint,
                                                            glm::vec3 lastpoint,

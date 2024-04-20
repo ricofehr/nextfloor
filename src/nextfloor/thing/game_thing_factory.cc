@@ -46,6 +46,13 @@ std::unique_ptr<Thing> GameThingFactory::MakeLittleRock(const glm::vec3& locatio
     return std::make_unique<Rock>(std::move(border), std::move(rock), movement);
 }
 
+std::unique_ptr<Thing> GameThingFactory::MakeTinyRock(const glm::vec3& location, const glm::vec3& movement) const
+{
+    std::unique_ptr<nextfloor::mesh::Border> border = border_factory_->MakeBorder(location, Rock::kTinyScale);
+    std::vector<std::unique_ptr<nextfloor::mesh::Polygon>> rock;
+    rock.push_back(polygon_factory_->MakeCube(location, Rock::kTinyScale, Rock::kTexture));
+    return std::make_unique<Rock>(std::move(border), std::move(rock), movement);
+}
 
 std::vector<std::unique_ptr<Thing>> GameThingFactory::GenerateWallBricks(glm::vec3 firstpoint,
                                                                          glm::vec3 lastpoint,

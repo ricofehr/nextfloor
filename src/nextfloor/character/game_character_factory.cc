@@ -59,6 +59,22 @@ std::unique_ptr<Character> GameCharacterFactory::MakeMovingRock(const glm::vec3&
     return std::make_unique<MovingRock>(std::move(border), std::move(fsm), std::move(rock), movement);
 }
 
+std::unique_ptr<Character> GameCharacterFactory::MakeMovingTinyRock(const glm::vec3& location,
+                                                                    const glm::vec3& movement) const
+{
+    assert(border_factory_ != nullptr);
+    assert(camera_factory_ != nullptr);
+    assert(fsm_factory_ != nullptr);
+
+    using nextfloor::mesh::Border;
+    std::unique_ptr<Border> border = border_factory_->MakeBorder(location, MovingRock::kTinyScale);
+    std::unique_ptr<FSM> fsm = fsm_factory_->MakeCharacterFSM();
+    std::vector<std::unique_ptr<nextfloor::mesh::Polygon>> rock;
+    rock.push_back(polygon_factory_->MakeCube(location, MovingRock::kTinyScale, MovingRock::kTexture));
+
+    return std::make_unique<MovingRock>(std::move(border), std::move(fsm), std::move(rock), movement);
+}
+
 }  // namespace character
 
 }  // namespace nextfloor
