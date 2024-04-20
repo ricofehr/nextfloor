@@ -12,7 +12,7 @@
 #include <memory>
 #include <vector>
 
-#include "nextfloor/thing/thing.h"
+#include "nextfloor/scenery/scenery.h"
 
 namespace nextfloor {
 
@@ -25,7 +25,7 @@ namespace playground {
 class BackWall : public WidthWall {
 
 public:
-    BackWall(std::vector<std::unique_ptr<nextfloor::thing::Thing>> wall_bricks);
+    BackWall(std::vector<std::unique_ptr<nextfloor::scenery::Scenery>> wall_bricks);
     ~BackWall() final = default;
 
     void PrepareDraw(const glm::mat4& view_projection_matrix) final;

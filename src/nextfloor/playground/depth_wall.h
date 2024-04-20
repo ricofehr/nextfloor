@@ -12,7 +12,7 @@
 #include <memory>
 #include <vector>
 
-#include "nextfloor/thing/thing.h"
+#include "nextfloor/scenery/scenery.h"
 
 namespace nextfloor {
 
@@ -36,7 +36,7 @@ public:
     void AddWindow() final;
 
 protected:
-    DepthWall(std::vector<std::unique_ptr<nextfloor::thing::Thing>> wall_bricks);
+    DepthWall(std::vector<std::unique_ptr<nextfloor::scenery::Scenery>> wall_bricks);
 
 private:
     static constexpr float kDoorDeltaZ = 6.0f;

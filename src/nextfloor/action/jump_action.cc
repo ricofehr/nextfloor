@@ -12,7 +12,7 @@ namespace nextfloor {
 
 namespace action {
 
-void JumpAction::execute(nextfloor::character::Character* actor)
+void JumpAction::execute(nextfloor::element::Element* actor)
 {
     assert(actor != nullptr);
     actor->Jump();

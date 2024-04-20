@@ -7,7 +7,7 @@
 #ifndef NEXTFLOOR_GAMEPLAY_ACTION_H_
 #define NEXTFLOOR_GAMEPLAY_ACTION_H_
 
-#include "nextfloor/character/character.h"
+#include "nextfloor/element/element.h"
 
 namespace nextfloor {
 
@@ -15,7 +15,7 @@ namespace gameplay {
 
 /**
  *  @class Action
- *  @brief Action interface, base class for apply Command Pattern to any character (player and NPJs) actions
+ *  @brief Action interface, base class for apply Command Pattern to any element (player and NPJs) actions
  */
 class Action {
 
@@ -25,7 +25,7 @@ public:
     /**
      * Execute Action on target object (actor)
      */
-    virtual void execute(nextfloor::character::Character* actor) = 0;
+    virtual void execute(nextfloor::element::Element* actor) = 0;
 
 protected:
     /* Default elapsed time : frame counts */

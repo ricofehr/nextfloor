@@ -15,12 +15,12 @@ namespace action {
 
 /**
  *  @class JumpAction
- *  @brief Implements Action (Command Pattern), generate Jump action for any character
+ *  @brief Implements Action (Command Pattern), generate Jump action for any element
  */
 class JumpAction : public nextfloor::gameplay::Action {
 
 public:
-    void execute(nextfloor::character::Character* actor) final;
+    void execute(nextfloor::element::Element* actor) final;
 };
 
 }  // namespace action

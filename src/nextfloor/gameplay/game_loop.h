@@ -54,7 +54,7 @@ private:
     void UpdateTime();
     void UpdateCameraOrientation();
     void HandlerInput();
-    void ManageCharacterStates();
+    void ManageElementStates();
     void Draw();
     void LogLoop();
     void LogFps();

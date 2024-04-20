@@ -7,11 +7,11 @@
 #ifndef NEXTFLOOR_GAMEPLAY_HEADCAMERA_H_
 #define NEXTFLOOR_GAMEPLAY_HEADCAMERA_H_
 
-#include "nextfloor/character/camera.h"
+#include "nextfloor/element/camera.h"
 
 #include <glm/glm.hpp>
 
-#include "nextfloor/character/character.h"
+#include "nextfloor/element/element.h"
 #include "nextfloor/mesh/mesh.h"
 
 namespace nextfloor {
@@ -22,12 +22,12 @@ namespace camera {
  *  @class HeadCamera
  *  @brief Concrete Implementation of Camera, for head vision
  */
-class HeadCamera : public nextfloor::character::Camera {
+class HeadCamera : public nextfloor::element::Camera {
 
 public:
     HeadCamera(float horizontal_angle = kDefaultHorizontalAngle,
                float vertical_angle = kDefaultVerticalAngle,
-               nextfloor::character::Character* owner = nullptr);
+               nextfloor::element::Element* owner = nullptr);
     ~HeadCamera() final = default;
 
     void ComputeOrientation() final;
@@ -39,7 +39,7 @@ public:
     glm::vec3 direction() const final { return direction_; }
     glm::vec3 head() const final { return head_; }
 
-    void set_owner(nextfloor::character::Character* owner) final { owner_ = owner; }
+    void set_owner(nextfloor::element::Element* owner) final { owner_ = owner; }
 
     void increment_angles(float horizontal_angle, float vertical_angle) final
     {
@@ -79,7 +79,7 @@ private:
     glm::vec3 location() const { return owner_->location(); }
     float fov() const { return fov_; }
 
-    nextfloor::character::Character* owner_{nullptr};
+    nextfloor::element::Element* owner_{nullptr};
     float horizontal_angle_{0.0f};
     float vertical_angle_{0.0f};
     float fov_{0.0f};

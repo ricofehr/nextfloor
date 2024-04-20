@@ -12,7 +12,7 @@
 #include <memory>
 #include <vector>
 
-#include "nextfloor/thing/thing.h"
+#include "nextfloor/scenery/scenery.h"
 
 namespace nextfloor {
 
@@ -31,7 +31,7 @@ public:
     static constexpr float kBrickHeight = 0.25f;
     static constexpr float kBrickDepth = 2.0f;
 
-    Roof(std::vector<std::unique_ptr<nextfloor::thing::Thing>> wall_bricks);
+    Roof(std::vector<std::unique_ptr<nextfloor::scenery::Scenery>> wall_bricks);
     ~Roof() final = default;
 
     void AddDoor() final;

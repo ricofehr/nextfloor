@@ -15,7 +15,7 @@ namespace nextfloor {
 
 namespace camera {
 
-HeadCamera::HeadCamera(float horizontal_angle, float vertical_angle, nextfloor::character::Character* owner)
+HeadCamera::HeadCamera(float horizontal_angle, float vertical_angle, nextfloor::element::Element* owner)
 {
     owner_ = owner;
     horizontal_angle_ = glm::radians(horizontal_angle);

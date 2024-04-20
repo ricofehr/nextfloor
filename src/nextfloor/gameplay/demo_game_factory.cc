@@ -9,7 +9,7 @@
 
 #include "nextfloor/gameplay/scene_window.h"
 #include "nextfloor/gameplay/input_handler.h"
-#include "nextfloor/character/character.h"
+#include "nextfloor/element/element.h"
 #include "nextfloor/physic/collision_engine.h"
 #include "nextfloor/playground/ground.h"
 
@@ -28,15 +28,15 @@ DemoGameFactory::DemoGameFactory(HidFactory* hid_factory,
                                  RendererFactory* renderer_factory,
                                  MenuFactory* menu_factory,
                                  nextfloor::playground::GroundFactory* ground_factory,
-                                 nextfloor::thing::ThingFactory* thing_factory,
-                                 nextfloor::character::CharacterFactory* character_factory,
+                                 nextfloor::scenery::SceneryFactory* scenery_factory,
+                                 nextfloor::element::ElementFactory* element_factory,
                                  nextfloor::physic::CollisionEngineFactory* collision_engine_factory)
 {
     hid_factory_ = hid_factory;
     renderer_factory_ = renderer_factory;
     ground_factory_ = ground_factory;
-    thing_factory_ = thing_factory;
-    character_factory_ = character_factory;
+    scenery_factory_ = scenery_factory;
+    element_factory_ = element_factory;
     collision_engine_factory_ = collision_engine_factory;
     menu_factory_ = menu_factory;
 }
@@ -62,9 +62,9 @@ std::unique_ptr<Level> DemoGameFactory::MakeLevel() const
 {
     using nextfloor::playground::Ground;
     std::unique_ptr<Ground> universe = GenerateUniverseWith3Rooms();
-    using nextfloor::character::Character;
-    std::unique_ptr<Character> player
-      = character_factory_->MakePlayer(glm::vec3(kPlayerLocationX, kPlayerLocationY, kPlayerLocationZ));
+    using nextfloor::element::Element;
+    std::unique_ptr<Element> player
+      = element_factory_->MakePlayer(glm::vec3(kPlayerLocationX, kPlayerLocationY, kPlayerLocationZ));
 
     using nextfloor::core::CommonServices;
     int granularity = CommonServices::getConfig()->getCollisionGranularity();
@@ -182,9 +182,9 @@ std::unique_ptr<nextfloor::playground::Ground> DemoGameFactory::GenerateRoom(glm
         auto rock_movement = rocks_movement[cnt];
 
         if (rock_movement.x != 0.0f || rock_movement.y != 0.0f || rock_movement.z != 0.0f) {
-            room_objects.push_back(character_factory_->MakeMovingTinyRock(rock_location, rock_movement));
+            room_objects.push_back(element_factory_->MakeMovingTinyRock(rock_location, rock_movement));
         } else {
-            room_objects.push_back(thing_factory_->MakeTinyRock(rock_location, rock_movement));
+            room_objects.push_back(scenery_factory_->MakeTinyRock(rock_location, rock_movement));
         }
     }
 

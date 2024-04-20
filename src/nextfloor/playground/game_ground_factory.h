@@ -15,7 +15,7 @@
 
 #include "nextfloor/playground/grid_factory.h"
 #include "nextfloor/mesh/border_factory.h"
-#include "nextfloor/thing/thing_factory.h"
+#include "nextfloor/scenery/scenery_factory.h"
 
 namespace nextfloor {
 
@@ -28,7 +28,7 @@ namespace playground {
 class GameGroundFactory : public GroundFactory {
 
 public:
-    GameGroundFactory(nextfloor::thing::ThingFactory* thing_factory,
+    GameGroundFactory(nextfloor::scenery::SceneryFactory* scenery_factory,
                       GridFactory* grid_factory,
                       nextfloor::mesh::BorderFactory* border_factory);
     ~GameGroundFactory() final = default;
@@ -45,7 +45,7 @@ private:
     std::unique_ptr<Wall> MakeFloor(const glm::vec3& location, const glm::vec3& scale) const;
     std::unique_ptr<Wall> MakeRoof(const glm::vec3& location, const glm::vec3& scale) const;
 
-    nextfloor::thing::ThingFactory* thing_factory_;
+    nextfloor::scenery::SceneryFactory* scenery_factory_;
     GridFactory* grid_factory_;
     nextfloor::mesh::BorderFactory* border_factory_;
 };

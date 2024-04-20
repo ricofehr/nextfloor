@@ -15,12 +15,12 @@ namespace action {
 
 /**
  *  @class MoveLeftAction
- *  @brief Implements Action (Command Pattern), generate Move Left action for any character
+ *  @brief Implements Action (Command Pattern), generate Move Left action for any element
  */
 class MoveLeftAction : public nextfloor::gameplay::Action {
 
 public:
-    void execute(nextfloor::character::Character* actor) final;
+    void execute(nextfloor::element::Element* actor) final;
 };
 
 }  // namespace action

@@ -36,25 +36,25 @@ set(action_SRCS
         src/nextfloor/action/sprite_action_factory.cc)
 
 set(ai_SRCS
-        src/nextfloor/ai/character_fsm.cc
-        src/nextfloor/ai/character_fsm_factory.cc
-        src/nextfloor/ai/gravity_character_state.cc
-        src/nextfloor/ai/idle_character_state.cc
-        src/nextfloor/ai/jumpdown_character_state.cc
-        src/nextfloor/ai/jumpup_character_state.cc
-        src/nextfloor/ai/movedown_character_state.cc
-        src/nextfloor/ai/moveleft_character_state.cc
-        src/nextfloor/ai/moveright_character_state.cc
-        src/nextfloor/ai/moveup_character_state.cc)
+        src/nextfloor/ai/element_fsm.cc
+        src/nextfloor/ai/element_fsm_factory.cc
+        src/nextfloor/ai/gravity_element_state.cc
+        src/nextfloor/ai/idle_element_state.cc
+        src/nextfloor/ai/jumpdown_element_state.cc
+        src/nextfloor/ai/jumpup_element_state.cc
+        src/nextfloor/ai/movedown_element_state.cc
+        src/nextfloor/ai/moveleft_element_state.cc
+        src/nextfloor/ai/moveright_element_state.cc
+        src/nextfloor/ai/moveup_element_state.cc)
 
 set(camera_SRCS
         src/nextfloor/camera/game_camera_factory.cc
         src/nextfloor/camera/head_camera.cc)
 
-set(character_SRCS
-        src/nextfloor/character/game_character_factory.cc
-        src/nextfloor/character/moving_rock.cc
-        src/nextfloor/character/player.cc)
+set(element_SRCS
+        src/nextfloor/element/game_element_factory.cc
+        src/nextfloor/element/moving_rock.cc
+        src/nextfloor/element/player.cc)
 
 set(core_SRCS
         src/nextfloor/core/common_services.cc
@@ -135,17 +135,17 @@ set(renderer_SRCS
         src/nextfloor/renderer/gl_shader_factory.cc
         src/nextfloor/renderer/vertex_gl_shader.cc)
 
-set(thing_SRCS
-        src/nextfloor/thing/game_thing_factory.cc
-        src/nextfloor/thing/rock.cc
-        src/nextfloor/thing/wall_brick.cc)
+set(scenery_SRCS
+        src/nextfloor/scenery/game_scenery_factory.cc
+        src/nextfloor/scenery/rock.cc
+        src/nextfloor/scenery/wall_brick.cc)
 
 set(nextfloor_SRCS
         ${ext_imgui_SRCS}
         ${action_SRCS}
         ${ai_SRCS}
         ${camera_SRCS}
-        ${character_SRCS}
+        ${element_SRCS}
         ${core_SRCS}
         ${gameplay_SRCS}
         ${hid_SRCS}
@@ -156,7 +156,7 @@ set(nextfloor_SRCS
         ${playground_SRCS}
         ${polygon_SRCS}
         ${renderer_SRCS}
-        ${thing_SRCS}
+        ${scenery_SRCS}
         src/nextfloor.cc)
 
 set(ext_imgui_HDRS
@@ -178,33 +178,33 @@ set(action_HDRS
         src/nextfloor/action/sprite_action_factory.h)
 
 set(ai_HDRS
-        src/nextfloor/ai/character_fsm.h
-        src/nextfloor/ai/character_fsm_factory.h
-        src/nextfloor/ai/character_state.h
-        src/nextfloor/ai/gravity_character_state.h
-        src/nextfloor/ai/idle_character_state.h
-        src/nextfloor/ai/jumpdown_character_state.h
-        src/nextfloor/ai/jumpup_character_state.h
-        src/nextfloor/ai/movedown_character_state.h
-        src/nextfloor/ai/moveleft_character_state.h
-        src/nextfloor/ai/moveright_character_state.h
-        src/nextfloor/ai/moveup_character_state.h)
+        src/nextfloor/ai/element_fsm.h
+        src/nextfloor/ai/element_fsm_factory.h
+        src/nextfloor/ai/element_state.h
+        src/nextfloor/ai/gravity_element_state.h
+        src/nextfloor/ai/idle_element_state.h
+        src/nextfloor/ai/jumpdown_element_state.h
+        src/nextfloor/ai/jumpup_element_state.h
+        src/nextfloor/ai/movedown_element_state.h
+        src/nextfloor/ai/moveleft_element_state.h
+        src/nextfloor/ai/moveright_element_state.h
+        src/nextfloor/ai/moveup_element_state.h)
 
 set(camera_HDRS
         src/nextfloor/camera/game_camera_factory.h
         src/nextfloor/camera/head_camera.h)
 
-set(character_HDRS
-        src/nextfloor/character/camera.h
-        src/nextfloor/character/camera_factory.h
-        src/nextfloor/character/character.h
-        src/nextfloor/character/character_factory.h
-        src/nextfloor/character/fsm.h
-        src/nextfloor/character/fsm_factory.h
-        src/nextfloor/character/game_character_factory.h
-        src/nextfloor/character/moving_rock.h
-        src/nextfloor/character/player.h
-        src/nextfloor/character/state.h)
+set(element_HDRS
+        src/nextfloor/element/camera.h
+        src/nextfloor/element/camera_factory.h
+        src/nextfloor/element/element.h
+        src/nextfloor/element/element_factory.h
+        src/nextfloor/element/fsm.h
+        src/nextfloor/element/fsm_factory.h
+        src/nextfloor/element/game_element_factory.h
+        src/nextfloor/element/moving_rock.h
+        src/nextfloor/element/player.h
+        src/nextfloor/element/state.h)
 
 set(core_HDRS
         src/nextfloor/core/common_services.h
@@ -319,19 +319,19 @@ set(renderer_HDRS
         src/nextfloor/renderer/shader_factory.h
         src/nextfloor/renderer/vertex_gl_shader.h)
 
-set(thing_HDRS
-        src/nextfloor/thing/game_thing_factory.h
-        src/nextfloor/thing/rock.h
-        src/nextfloor/thing/thing.h
-        src/nextfloor/thing/thing_factory.h
-        src/nextfloor/thing/wall_brick.h)
+set(scenery_HDRS
+        src/nextfloor/scenery/game_scenery_factory.h
+        src/nextfloor/scenery/rock.h
+        src/nextfloor/scenery/scenery.h
+        src/nextfloor/scenery/scenery_factory.h
+        src/nextfloor/scenery/wall_brick.h)
 
 set(nextfloor_HDRS
         ${ext_imgui_HDRS}
         ${action_HDRS}
         ${ai_HDRS}
         ${camera_HDRS}
-        ${character_HDRS}
+        ${element_HDRS}
         ${core_HDRS}
         ${gameplay_HDRS}
         ${hid_HDRS}
@@ -342,7 +342,7 @@ set(nextfloor_HDRS
         ${playground_HDRS}
         ${polygon_HDRS}
         ${renderer_HDRS}
-        ${thing_HDRS})
+        ${scenery_HDRS})
 
 add_executable(nextfloor ${nextfloor_SRCS} ${nextfloor_HDRS})
 
