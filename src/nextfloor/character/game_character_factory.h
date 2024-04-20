@@ -33,6 +33,7 @@ public:
 
     std::unique_ptr<Character> MakePlayer(const glm::vec3& location) const override;
     std::unique_ptr<Character> MakeMovingRock(const glm::vec3& location, const glm::vec3& movement) const override;
+    std::unique_ptr<Character> MakeMovingTinyRock(const glm::vec3& location, const glm::vec3& movement) const override;
 
 private:
     CameraFactory* camera_factory_{nullptr};
