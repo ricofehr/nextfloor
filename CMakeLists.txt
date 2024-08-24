@@ -8,7 +8,7 @@ include_directories(src)
 set (CMAKE_CXX_STANDARD 20)
 # define bin folder as destination folder
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
-SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
 # Mojave issue
 IF(APPLE)
@@ -354,5 +354,9 @@ find_package(GLEW REQUIRED)
 find_package(SOIL REQUIRED)
 add_definitions("-std=gnu++20 -Wall")
 include_directories(${OPENGL_INCLUDE_DIR} ${GLEW_INCLUDE_DIR} ${SOIL_INCLUDE_DIR} ${Config++_INCLUDE_DIRS})
-target_link_libraries(nextfloor ${OPENGL_gl_LIBRARY} glew ${SOIL_LIBRARY} glfw config++ tbb)
+# On MacOs Glew library not found by cmake
+IF(APPLE)
+    set(GLEW_LIBRARIES "glew")
+ENDIF()
+target_link_libraries(nextfloor ${OPENGL_gl_LIBRARY} ${GLEW_LIBRARIES} ${SOIL_LIBRARY} glfw config++ tbb)
 target_compile_features(nextfloor PUBLIC cxx_nullptr)
