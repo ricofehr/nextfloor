@@ -11,7 +11,7 @@ Needs Git Lfs Extension, Cmake (>3.1 and <3.13), TBB, OpenGL3 (>3.3) and GLew / 
 
 On ubuntu or Debian, apt-get make most of prerequisites install
 ```
-# apt-get install cmake make g++ libx11-dev libgl1-mesa-dev libglu1-mesa-dev
+# apt-get install cmake make g++ git-lfs libx11-dev libgl1-mesa-dev libglu1-mesa-dev
 # apt-get install libxrandr-dev libxext-dev libglfw3-dev libsoil-dev libglm-dev
 # apt-get install libglew-dev opencl-headers libtbb-dev lsb-core libconfig++-dev
 ```
