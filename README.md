@@ -12,23 +12,13 @@ Needs Git Lfs Extension, Cmake (>3.1 and <3.13), TBB, OpenGL3 (>3.3) and GLew / 
 On ubuntu or Debian, apt-get make most of prerequisites install
 ```
 # apt-get install cmake make g++ git-lfs libx11-dev libgl1-mesa-dev libglu1-mesa-dev
-# apt-get install libxrandr-dev libxext-dev libglfw3-dev libsoil-dev libglm-dev
+# apt-get install libxrandr-dev libxext-dev libglfw3-dev libglm-dev
 # apt-get install libglew-dev opencl-headers libtbb-dev lsb-core libconfig++-dev
 ```
 
 On OSX, we need XCode and install some libraries with brew (SOIL must be install manually)
 ```
 $ brew install cmake glm glew glfw3 tbb libconfig git-lfs
-```
-
-And SOIL must be install manually
-```bash
-git clone https://github.com/childhood/libSOIL
-cd libSOIL && make
-sudo mkdir -p /opt/local/include/SOIL
-sudo mkdir -p /opt/local/lib
-sudo cp *.h /opt/local/include/SOIL/
-sudo cp libSOIL.* /opt/local/lib/
 ```
 
 ## Compile
@@ -72,10 +62,10 @@ Scanning dependencies of target nextfloor
 
 ## Features
 
-- C++14
+- C++17
 - TBB
 - Opengl 3
-- Use of Glew, GLM, SOIL, Glfw libraries
+- Use of Glew, GLM, stb_image, Glfw libraries
 - CMake for compile
 
 ## Folders

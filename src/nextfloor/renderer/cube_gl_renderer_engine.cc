@@ -9,7 +9,7 @@
 #include <iostream>
 #include <vector>
 #include <GL/glew.h>
-#include <SOIL/SOIL.h>
+#include "stb_image.h"
 
 namespace nextfloor {
 
@@ -135,7 +135,7 @@ void CubeGlRendererEngine::InitShaderAttributes()
  */
 void CubeGlRendererEngine::CreateTextureBuffer()
 {
-    int width, height;
+    int width, height, nr_channels;
     unsigned char* image;
 
     glGenTextures(1, &texturebuffer_);
@@ -152,15 +152,15 @@ void CubeGlRendererEngine::CreateTextureBuffer()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
     /* Load Texture */
-    image = SOIL_load_image(texture_.c_str(), &width, &height, 0, SOIL_LOAD_RGB);
+    image = stbi_load(texture_.c_str(), &width, &height, &nr_channels, 0);
 
     if (image) {
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
         glGenerateMipmap(GL_TEXTURE_2D);
     } else {
-        std::cout << "Failed to load texture:" << texture_ << std::endl;
+        std::cout << "Failed to load texture:" << texture_ << "::" << stbi_failure_reason() << std::endl;
     }
-    SOIL_free_image_data(image);
+    stbi_image_free(image);
     glUseProgram(pipeline_program_->getProgramId());
     glUniform1i(glGetUniformLocation(pipeline_program_->getProgramId(), "tex"), 0);
 }
