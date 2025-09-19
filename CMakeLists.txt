@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 4.0)
 project(nextfloor)
 
 # pick a version #
@@ -14,7 +14,6 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 IF(APPLE)
     include_directories(/opt/local/include)
     # Fix linking on 10.14+. See https://stackoverflow.com/questions/54068035
-    LINK_DIRECTORIES(/opt/local/lib)
     LINK_DIRECTORIES(/opt/homebrew/lib/)
 ENDIF()
 
@@ -133,6 +132,7 @@ set(renderer_SRCS
         src/nextfloor/renderer/gl_scene_window.cc
         src/nextfloor/renderer/gl_shader.cc
         src/nextfloor/renderer/gl_shader_factory.cc
+        src/nextfloor/renderer/stb_image_wrapper.cc
         src/nextfloor/renderer/vertex_gl_shader.cc)
 
 set(scenery_SRCS
@@ -317,6 +317,7 @@ set(renderer_HDRS
         src/nextfloor/renderer/pipeline_program.h
         src/nextfloor/renderer/shader.h
         src/nextfloor/renderer/shader_factory.h
+        src/nextfloor/renderer/stb_image.h
         src/nextfloor/renderer/vertex_gl_shader.h)
 
 set(scenery_HDRS
@@ -351,12 +352,11 @@ find_package(Config++ REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(glfw3 REQUIRED)
 find_package(GLEW REQUIRED)
-find_package(SOIL REQUIRED)
 add_definitions("-std=gnu++20 -Wall")
-include_directories(${OPENGL_INCLUDE_DIR} ${GLEW_INCLUDE_DIR} ${SOIL_INCLUDE_DIR} ${Config++_INCLUDE_DIRS})
+include_directories(${OPENGL_INCLUDE_DIR} ${GLEW_INCLUDE_DIR} ${Config++_INCLUDE_DIRS})
 # On MacOs Glew library not found by cmake
 IF(APPLE)
     set(GLEW_LIBRARIES "glew")
 ENDIF()
-target_link_libraries(nextfloor ${OPENGL_gl_LIBRARY} ${GLEW_LIBRARIES} ${SOIL_LIBRARY} glfw config++ tbb)
+target_link_libraries(nextfloor ${OPENGL_gl_LIBRARY} ${GLEW_LIBRARIES} glfw config++ tbb)
 target_compile_features(nextfloor PUBLIC cxx_nullptr)

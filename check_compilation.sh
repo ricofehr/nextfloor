@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-#find src/. -regex '^.*\.cc$' -exec clang -x c++ -Wall -std=gnu++17 {} -Isrc -c -o tmp/ok.o \;
+mkdir -p tmp
 
 find src/. -regex '^.*\.h$' | while read CCFILE; do
   CCFILENAME="${CCFILE##*/}"

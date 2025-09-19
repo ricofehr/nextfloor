@@ -9,7 +9,7 @@
 #include <iostream>
 #include <vector>
 #include <GL/glew.h>
-#include <SOIL/SOIL.h>
+#include "stb_image.h"
 
 namespace nextfloor {
 
@@ -97,7 +97,7 @@ void CubeMapGlRendererEngine::CreateVertexBuffer()
  */
 void CubeMapGlRendererEngine::CreateTextureBuffer()
 {
-    int width, height;
+    int width, height, nr_channels;
     std::string textures_faces[6] = {"assets/cubemap/right.png",
                                      "assets/cubemap/left.png",
                                      "assets/cubemap/top.png",
@@ -112,14 +112,14 @@ void CubeMapGlRendererEngine::CreateTextureBuffer()
 
     for(GLuint i = 0; i < 6; i++) {
         /* Load Texture */
-        unsigned char* image = SOIL_load_image(textures_faces[i].c_str(), &width, &height, 0, SOIL_LOAD_RGB);
+        unsigned char* image = stbi_load(textures_faces[i].c_str(), &width, &height, &nr_channels, 0);
         if (image) {
-            glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
+            glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
             std::cout << "OK to load texture:" << textures_faces[i] << std::endl;
         } else {
-            std::cout << "Failed to load texture:" << textures_faces[i] << std::endl;
+            std::cout << "Failed to load texture:" << textures_faces[i] << "::" << stbi_failure_reason() << std::endl;
         }
-        SOIL_free_image_data(image);
+        stbi_image_free(image);
     }
 
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
