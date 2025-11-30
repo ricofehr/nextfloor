@@ -53,7 +53,7 @@ const GLfloat sBufferData[192] = {
 };
 // clang-format on
 
-}  // namespace
+}  // anonymous namespace
 
 CubeGlRendererEngine::CubeGlRendererEngine(const std::string& texture, PipelineProgram* pipeline_program)
       : GlRendererEngine(pipeline_program)
@@ -76,11 +76,11 @@ void CubeGlRendererEngine::Init()
 void CubeGlRendererEngine::CreateVertexBuffer()
 {
     glGenVertexArrays(1, &vertexarray_);
-    glGenBuffers(1, &vertexbuffer_);
-    assert(vertexbuffer_ != 0);
+    glGenBuffers(1, &vertex_buffer_);
+    assert(vertex_buffer_ != 0);
 
     glBindVertexArray(vertexarray_);
-    glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer_);
+    glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_);
     glBufferData(GL_ARRAY_BUFFER, sizeof(sBufferData), sBufferData, GL_STATIC_DRAW);
 }
 
@@ -110,10 +110,10 @@ void CubeGlRendererEngine::CreateElementBuffer()
     };
     // clang-format on
 
-    glGenBuffers(1, &elementbuffer_);
-    assert(elementbuffer_ != 0);
+    glGenBuffers(1, &element_buffer_);
+    assert(element_buffer_ != 0);
 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementbuffer_);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, element_buffer_);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(elements), elements, GL_STATIC_DRAW);
 }
 
@@ -138,11 +138,11 @@ void CubeGlRendererEngine::CreateTextureBuffer()
     int width, height, nr_channels;
     unsigned char* image;
 
-    glGenTextures(1, &texturebuffer_);
-    assert(texturebuffer_ != 0);
+    glGenTextures(1, &texture_buffer_);
+    assert(texture_buffer_ != 0);
 
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, texturebuffer_);
+    glBindTexture(GL_TEXTURE_2D, texture_buffer_);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -176,7 +176,7 @@ void CubeGlRendererEngine::Draw(const glm::mat4& mvp)
     /* Assign projection matrix to drawn */
     glUniformMatrix4fv(pipeline_program_->getMatrixId(), 1, GL_FALSE, &mvp[0][0]);
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, texturebuffer_);
+    glBindTexture(GL_TEXTURE_2D, texture_buffer_);
     glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
 }
@@ -187,9 +187,9 @@ CubeGlRendererEngine::~CubeGlRendererEngine()
     glDisableVertexAttribArray(1);
     glDisableVertexAttribArray(2);
     glDeleteVertexArrays(1, &vertexarray_);
-    glDeleteBuffers(1, &vertexbuffer_);
-    glDeleteBuffers(1, &texturebuffer_);
-    glDeleteBuffers(1, &elementbuffer_);
+    glDeleteBuffers(1, &vertex_buffer_);
+    glDeleteBuffers(1, &texture_buffer_);
+    glDeleteBuffers(1, &element_buffer_);
 }
 
 }  // namespace renderer

@@ -47,8 +47,7 @@ CMakeFiles/
 cmake-build-debug
 
 # Bin folder
-bin/*
-!bin/.gitkeep
+bin/nextfloor
 .DS_Store
 
 # Build folder

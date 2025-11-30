@@ -34,10 +34,10 @@ private:
     bool is_initialized_ = false;
     std::string texture_;
 
-    GLuint elementbuffer_;
+    GLuint element_buffer_;
     GLuint vertexarray_;
-    GLuint vertexbuffer_;
-    GLuint texturebuffer_;
+    GLuint vertex_buffer_;
+    GLuint texture_buffer_;
 };
 
 }  // namespace renderer
