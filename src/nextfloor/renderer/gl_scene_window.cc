@@ -145,6 +145,9 @@ void GlSceneWindow::PrepareDisplay()
     /* Clear the scene */
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    /* Apply Gamma Correction */
+    glEnable(GL_FRAMEBUFFER_SRGB);
+
     InitPolygonMode();
     glPolygonMode(GL_FRONT_AND_BACK, polygon_mode_);
 }

@@ -114,7 +114,7 @@ void CubeMapGlRendererEngine::CreateTextureBuffer()
         /* Load Texture */
         unsigned char* image = stbi_load(textures_faces[i].c_str(), &width, &height, &nr_channels, 0);
         if (image) {
-            glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
+            glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_SRGB, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
             std::cout << "OK to load texture:" << textures_faces[i] << std::endl;
         } else {
             std::cout << "Failed to load texture:" << textures_faces[i] << "::" << stbi_failure_reason() << std::endl;

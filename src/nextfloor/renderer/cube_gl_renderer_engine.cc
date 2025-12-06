@@ -155,7 +155,7 @@ void CubeGlRendererEngine::CreateTextureBuffer()
     image = stbi_load(texture_.c_str(), &width, &height, &nr_channels, 0);
 
     if (image) {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_SRGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, image);
         glGenerateMipmap(GL_TEXTURE_2D);
     } else {
         std::cout << "Failed to load texture:" << texture_ << "::" << stbi_failure_reason() << std::endl;
