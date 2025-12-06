@@ -137,6 +137,7 @@ void GlSceneWindow::CheckPrerequisites()
 
 void GlSceneWindow::PrepareDisplay()
 {
+    /* Enable Depth Testing */
     glEnable(GL_DEPTH_TEST);
 
     /* Accept fragment if it closer to the camera than the former one */
@@ -147,6 +148,9 @@ void GlSceneWindow::PrepareDisplay()
 
     /* Apply Gamma Correction */
     glEnable(GL_FRAMEBUFFER_SRGB);
+
+    /* Enable Anti-Aliasing */
+    glEnable(GL_MULTISAMPLE);
 
     InitPolygonMode();
     glPolygonMode(GL_FRONT_AND_BACK, polygon_mode_);
