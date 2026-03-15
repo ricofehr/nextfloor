@@ -146,12 +146,17 @@ if(NOT TBB_FOUND)
     list(APPEND TBB_LIB_PATH_SUFFIX "lib/${TBB_ARCHITECTURE}/vc_mt")
 
   elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-    # OS X
-    set(TBB_DEFAULT_SEARCH_DIR "/opt/intel/tbb")
-    
+    # macOS - support both Intel and Apple Silicon
+    set(TBB_DEFAULT_SEARCH_DIR
+        "/opt/intel/tbb"
+        "/opt/homebrew"
+        "/usr/local"
+        "/opt/local"
+    )
+
     # TODO: Check to see which C++ library is being used by the compiler.
     if(NOT ${CMAKE_SYSTEM_VERSION} VERSION_LESS 13.0)
-      # The default C++ library on OS X 10.9 and later is libc++
+      # The default C++ library on macOS 10.9 and later is libc++
       set(TBB_LIB_PATH_SUFFIX "lib/libc++" "lib")
     else()
       set(TBB_LIB_PATH_SUFFIX "lib")
@@ -271,10 +276,12 @@ if(NOT TBB_FOUND)
   ##################################
 
   if(NOT CMAKE_VERSION VERSION_LESS 3.0 AND TBB_FOUND)
+    # Create both tbb and TBB::tbb targets for compatibility
     add_library(tbb SHARED IMPORTED)
     set_target_properties(tbb PROPERTIES
           INTERFACE_INCLUDE_DIRECTORIES  ${TBB_INCLUDE_DIRS}
           IMPORTED_LOCATION              ${TBB_LIBRARIES})
+    add_library(TBB::tbb ALIAS tbb)
     if(TBB_LIBRARIES_RELEASE AND TBB_LIBRARIES_DEBUG)
       set_target_properties(tbb PROPERTIES
           INTERFACE_COMPILE_DEFINITIONS "$<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:TBB_USE_DEBUG=1>"

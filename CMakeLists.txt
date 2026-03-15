@@ -1,21 +1,28 @@
-cmake_minimum_required(VERSION 4.0)
+cmake_minimum_required(VERSION 3.14)
 project(nextfloor)
 
 # pick a version #
 set(nextfloor_VERSION 0.3)
 
 include_directories(src)
-set (CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # define bin folder as destination folder
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
-# Mojave issue
-IF(APPLE)
-    include_directories(/opt/local/include)
-    # Fix linking on 10.14+. See https://stackoverflow.com/questions/54068035
-    LINK_DIRECTORIES(/opt/homebrew/lib/)
-ENDIF()
+# Platform-specific settings for better cross-platform support
+if(APPLE)
+    # Use modern CMake find packages with proper framework support
+    set(CMAKE_FIND_FRAMEWORK FIRST)
+    # For Homebrew (both Intel and Apple Silicon)
+    list(APPEND CMAKE_PREFIX_PATH "/opt/homebrew" "/usr/local")
+endif()
+
+# Linux requires pkg-config for proper library detection
+if(UNIX AND NOT APPLE)
+    find_package(PkgConfig REQUIRED)
+endif()
 
 set(ext_imgui_SRCS
         src/ext/imgui/imgui.cpp
@@ -347,16 +354,60 @@ set(nextfloor_HDRS
 
 add_executable(nextfloor ${nextfloor_SRCS} ${nextfloor_HDRS})
 
+# Find dependencies
 find_package(TBB REQUIRED)
 find_package(Config++ REQUIRED)
 find_package(OpenGL REQUIRED)
-find_package(glfw3 REQUIRED)
 find_package(GLEW REQUIRED)
-add_definitions("-std=gnu++20 -Wall")
+
+# Find GLFW (use find_library since find_package may not work reliably on macOS)
+find_library(GLFW_LIBRARY NAMES glfw3 glfw PATHS /opt/homebrew/lib /usr/local/lib /opt/local/lib)
+if(NOT GLFW_LIBRARY)
+    message(FATAL_ERROR "GLFW library not found")
+endif()
+set(GLFW3_LIBRARIES ${GLFW_LIBRARY})
+
+# Include directories
 include_directories(${OPENGL_INCLUDE_DIR} ${GLEW_INCLUDE_DIR} ${Config++_INCLUDE_DIRS})
-# On MacOs Glew library not found by cmake
-IF(APPLE)
-    set(GLEW_LIBRARIES "glew")
-ENDIF()
-target_link_libraries(nextfloor ${OPENGL_gl_LIBRARY} ${GLEW_LIBRARIES} glfw config++ tbb)
-target_compile_features(nextfloor PUBLIC cxx_nullptr)
+
+# Handle platform-specific library linking
+if(APPLE)
+    # On macOS, GLEW library is typically named "libglew.dylib"
+    # The find_package usually finds it correctly, but we ensure it
+    if(NOT GLEW_LIBRARIES)
+        find_library(GLEW_LIBRARY NAMES glew glew32 PATHS /opt/homebrew/lib /usr/local/lib /opt/local/lib)
+        set(GLEW_LIBRARIES ${GLEW_LIBRARY})
+    endif()
+
+    # macOS frameworks required for OpenGL
+    find_library(COCOA_LIBRARY Cocoa)
+    find_library(IOKIT_LIBRARY IOKit)
+    find_library(COREVIDEO_LIBRARY CoreVideo)
+
+    target_link_libraries(nextfloor
+        ${OPENGL_gl_LIBRARY}
+        ${GLEW_LIBRARIES}
+        ${GLFW3_LIBRARIES}
+        Config++::Config++
+        TBB::tbb
+        ${COCOA_LIBRARY}
+        ${IOKIT_LIBRARY}
+        ${COREVIDEO_LIBRARY}
+    )
+else()
+    # Linux
+    # Use pkg-config to get proper linker flags for glfw3
+    if(PKG_CONFIG_FOUND)
+        pkg_check_modules(GLFW3 REQUIRED glfw3)
+    endif()
+
+    target_link_libraries(nextfloor
+        ${OPENGL_gl_LIBRARY}
+        ${GLEW_LIBRARIES}
+        ${GLFW3_LIBRARIES}
+        Config++::Config++
+        TBB::tbb
+    )
+endif()
+
+target_compile_features(nextfloor PUBLIC cxx_std_20)
