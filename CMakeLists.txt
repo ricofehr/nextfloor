@@ -19,6 +19,12 @@ if(APPLE)
     list(APPEND CMAKE_PREFIX_PATH "/opt/homebrew" "/usr/local")
 endif()
 
+# Linux with Homebrew (Bazzite) - add Homebrew paths
+if(UNIX AND NOT APPLE)
+    list(APPEND CMAKE_PREFIX_PATH "/home/linuxbrew/.linuxbrew")
+    list(APPEND CMAKE_PREFIX_PATH "$ENV{HOME}/.linuxbrew")
+endif()
+
 # Linux requires pkg-config for proper library detection
 if(UNIX AND NOT APPLE)
     find_package(PkgConfig REQUIRED)
@@ -358,14 +364,59 @@ add_executable(nextfloor ${nextfloor_SRCS} ${nextfloor_HDRS})
 find_package(TBB REQUIRED)
 find_package(Config++ REQUIRED)
 find_package(OpenGL REQUIRED)
-find_package(GLEW REQUIRED)
 
-# Find GLFW (use find_library since find_package may not work reliably on macOS)
-find_library(GLFW_LIBRARY NAMES glfw3 glfw PATHS /opt/homebrew/lib /usr/local/lib /opt/local/lib)
-if(NOT GLFW_LIBRARY)
-    message(FATAL_ERROR "GLFW library not found")
+# Find GLEW - use pkg-config first, then fall back to find_library
+if(PKG_CONFIG_FOUND)
+    pkg_check_modules(GLEW glew)
 endif()
-set(GLFW3_LIBRARIES ${GLFW_LIBRARY})
+if(NOT GLEW_LIBRARY)
+    find_library(GLEW_LIBRARY NAMES glew GLEW glew32
+        PATHS
+            /home/linuxbrew/.linuxbrew/lib
+            $ENV{HOME}/.linuxbrew/lib
+            /opt/homebrew/lib
+            /usr/local/lib
+            /opt/local/lib
+            /usr/lib
+            /usr/lib64
+    )
+    if(NOT GLEW_LIBRARY)
+        message(FATAL_ERROR "GLEW library not found")
+    endif()
+endif()
+set(GLEW_LIBRARIES ${GLEW_LIBRARY})
+
+# If pkg-config found GLEW, get include directories
+if(PKG_CONFIG_FOUND AND GLEW_FOUND)
+    include_directories(${GLEW_INCLUDE_DIRS})
+endif()
+
+# Find GLFW
+# Use pkg-config on Linux for reliable detection
+if(PKG_CONFIG_FOUND)
+    pkg_check_modules(GLFW3 glfw3)
+endif()
+
+# Fallback: try find_library if pkg-config didn't find it
+# Try Homebrew paths first (for Linux like Bazzite), then macOS paths
+if(NOT GLFW3_LIBRARY)
+    find_library(GLFW_LIBRARY NAMES glfw3 glfw
+        PATHS
+            /home/linuxbrew/.linuxbrew/lib
+            $ENV{HOME}/.linuxbrew/lib
+            /opt/homebrew/lib
+            /usr/local/lib
+            /opt/local/lib
+            /usr/lib
+            /usr/lib64
+    )
+    if(GLFW_LIBRARY)
+        set(GLFW3_LIBRARY ${GLFW_LIBRARY})
+    else()
+        message(FATAL_ERROR "GLFW library not found")
+    endif()
+endif()
+set(GLFW3_LIBRARIES ${GLFW3_LIBRARY})
 
 # Include directories
 include_directories(${OPENGL_INCLUDE_DIR} ${GLEW_INCLUDE_DIR} ${Config++_INCLUDE_DIRS})
@@ -396,9 +447,12 @@ if(APPLE)
     )
 else()
     # Linux
-    # Use pkg-config to get proper linker flags for glfw3
+    # Use pkg-config to get proper linker flags for glfw3 (include dirs and libraries)
     if(PKG_CONFIG_FOUND)
-        pkg_check_modules(GLFW3 REQUIRED glfw3)
+        pkg_check_modules(GLFW3 glfw3)
+        if(GLFW3_FOUND)
+            include_directories(${GLFW3_INCLUDE_DIRS})
+        endif()
     endif()
 
     target_link_libraries(nextfloor
